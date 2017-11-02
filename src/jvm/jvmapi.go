@@ -5,13 +5,14 @@ import (
 	"bytes"
 	"log"
 	"regexp"
+	"strconv"
+	"fmt"
 )
 
 
 func Test(){
 	slice := getAllJavaProcess()
-	slice.
-	println(slice)
+	getJVMInfo(slice)
 }
 
 /**
@@ -27,7 +28,7 @@ func getAllJavaProcess()[]string{
 		log.Panic(err)
 	}
 
-	var slice []string = make([]string, 10)
+	var slice []string = make([]string, 0)
 	for{
 		line,err := out.ReadString('\n')
 
@@ -45,4 +46,72 @@ func getAllJavaProcess()[]string{
 	}
 
 	return slice
+}
+
+/**
+	jvm详细信息
+ */
+type jvminfo struct{
+
+	eden 	float64
+	old 	float64
+	ygc		int
+	ygct	float64
+	fgc		int
+	fgct 	float64
+
+}
+
+
+/**
+	获取jvm详细参数
+ */
+func getJVMInfo(apps []string){
+
+
+	for i:= 0;i < len(apps);i++ {
+
+		cmd := exec.Command("jstat","-gcutil",apps[i])
+		var out bytes.Buffer
+		cmd.Stdout = &out
+		err := cmd.Run()
+		if err != nil{
+			log.Print(err)
+			continue
+		}
+
+		out.ReadString('\n')
+		gc,err := out.ReadString('\n')
+
+		if err != nil{
+			log.Print(err)
+			continue;
+		}
+
+		pInfo := parserJvmInfo(gc)
+		fmt.Println(pInfo)
+	}
+
+}
+
+func parserJvmInfo(info string)*jvminfo{
+
+	reg := regexp.MustCompile(`[0-9.-]+`)
+	collect := reg.FindAllString(info,-1)
+
+	//gcutil总长度为11
+	if(len(collect) != 11){
+		log.Print("error to parser jvm info,string length is" + strconv.Itoa(len(collect)) )
+		return nil
+	}
+
+	ret := new(jvminfo)
+	ret.eden,_ = strconv.ParseFloat(collect[2], 32)
+	ret.old,_ = strconv.ParseFloat(collect[3], 32)
+	ret.fgc,_ = strconv.Atoi(collect[8])
+	ret.fgct,_= strconv.ParseFloat(collect[9], 32)
+	ret.ygc,_ = strconv.Atoi(collect[6])
+	ret.ygct,_= strconv.ParseFloat(collect[7], 32)
+
+	return ret
 }
