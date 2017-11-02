@@ -30,7 +30,7 @@ func writeFile(min int,max int,size int){
 		sz := rand.Intn(max - min) + min
 		timestamp := time.Now().Unix()
 		tm := time.Unix(timestamp, 0)
-		filename := tm.Format("20060102030405" + strconv.Itoa(rand.Intn(100000000)))
+		filename := tm.Format("20060102030405") + strconv.Itoa(rand.Intn(100000000))
 		writeRandomFile(filename,sz)
 	}
 }

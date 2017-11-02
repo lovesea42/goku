@@ -8,11 +8,12 @@ package main
 import (
 	//"jvm"
 	//"osinfo"
+	//"file"
 )
 
 func main(){
 
 	//osinfo.GetOSArch()
 	//jvm.Test()
-
+	//file.FileCreator()
 }
