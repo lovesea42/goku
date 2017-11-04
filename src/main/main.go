@@ -11,8 +11,19 @@ import (
 	//"file"
 	"config"
 	"fmt"
-	"encoding/json"
+	_"encoding/json"
+	"plugins/jvm"
+	"plugins"
 )
+
+func testJvm(){
+	data := new(jvm.ApiJvm)
+	var i plugins.IPlugin = data
+	i.Init()
+	i.Collect()
+	//slice := getAllJavaProcess()
+	//data.getJVMInfo(slice)
+}
 
 func main(){
 
@@ -20,6 +31,6 @@ func main(){
 	cfg.InitConfig("config.ini")
 	fmt.Println(cfg.Read("default","dest"))
 	//osinfo.GetOSArch()
-	//jvm.Test()
+	testJvm()
 	//file.FileCreator()
 }

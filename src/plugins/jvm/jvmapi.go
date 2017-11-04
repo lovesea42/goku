@@ -10,9 +10,33 @@ import (
 )
 
 
-func Test(){
-	slice := getAllJavaProcess()
-	getJVMInfo(slice)
+type ApiJvm struct{
+	info map[string]jvminfo		//具体信息集合
+}
+
+/**
+	jvm详细信息
+ */
+type jvminfo struct{
+
+	eden 	float64
+	old 	float64
+	ygc		int
+	ygct	float64
+	fgc		int
+	fgct 	float64
+
+}
+
+func (self *ApiJvm)Init(){
+	self.info = make(map[string]jvminfo)
+}
+
+func (self *ApiJvm)Collect(){
+
+	//再修正
+	apps := getAllJavaProcess()
+	self.getJVMInfo(apps)
 }
 
 /**
@@ -48,25 +72,13 @@ func getAllJavaProcess()[]string{
 	return slice
 }
 
-/**
-	jvm详细信息
- */
-type jvminfo struct{
 
-	eden 	float64
-	old 	float64
-	ygc		int
-	ygct	float64
-	fgc		int
-	fgct 	float64
-
-}
 
 
 /**
 	获取jvm详细参数
  */
-func getJVMInfo(apps []string){
+func (self *ApiJvm)getJVMInfo(apps []string){
 
 
 	for i:= 0;i < len(apps);i++ {
@@ -90,6 +102,7 @@ func getJVMInfo(apps []string){
 
 		pInfo := parserJvmInfo(gc)
 		fmt.Println(pInfo)
+		self.info[apps[i]] = *pInfo
 	}
 
 }
