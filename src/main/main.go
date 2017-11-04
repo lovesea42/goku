@@ -6,9 +6,6 @@ package main
 	GOOS=linux GOARCH=amd64 go build
  */
 import (
-	//"jvm"
-	//"osinfo"
-	//"file"
 	"config"
 	"fmt"
 	_"encoding/json"
