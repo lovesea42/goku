@@ -21,8 +21,6 @@ func testJvm(){
 	var i plugins.IPlugin = data
 	i.Init()
 	i.Collect()
-	//slice := getAllJavaProcess()
-	//data.getJVMInfo(slice)
 }
 
 func main(){
