@@ -1,4 +1,4 @@
-package config
+package tools
 
 import (
 	"os"
@@ -6,11 +6,16 @@ import (
 	"bufio"
 	"strings"
 	"io"
+	"errors"
 )
 
 /**
 	配置模块
  */
+type IOption interface{
+	Init()
+}
+
 
 
 const middle = "========="
@@ -98,11 +103,11 @@ func (c *Config)InitConfig(path string){
 	}
 }
 
-func (c Config) Read(node, key string) string {
+func (c Config) Read(node, key string) (string,error) {
 	key = node + middle + key
 	v, found := c.configMap[key]
 	if !found {
-		return ""
+		return "",errors.New("error to read file")
 	}
-	return v
+	return v,nil
 }

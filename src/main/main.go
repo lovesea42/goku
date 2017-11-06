@@ -6,11 +6,11 @@ package main
 	GOOS=linux GOARCH=amd64 go build
  */
 import (
-	"config"
-	"fmt"
+	"config/tools"
 	_"encoding/json"
 	"plugins/jvm"
 	"plugins"
+	"config/options"
 )
 
 func testJvm(){
@@ -20,12 +20,17 @@ func testJvm(){
 	i.Collect()
 }
 
+
+func initOptions(){
+	cfg := new(tools.Config)
+	cfg.InitConfig("config.ini")
+	defaultOptions := new(options.DefaultOptions)
+	defaultOptions.Init(cfg)
+}
+
 func main(){
 
-	cfg := new(config.Config)
-	cfg.InitConfig("config.ini")
-	fmt.Println(cfg.Read("default","dest"))
-	//osinfo.GetOSArch()
-	testJvm()
-	//file.FileCreator()
+	initOptions()
+	//testJvm()
+
 }
