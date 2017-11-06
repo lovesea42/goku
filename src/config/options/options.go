@@ -10,14 +10,14 @@ const interval_const string = "interval"
 
 
 type DefaultOptions struct {
-	destServer string		//上传服务器
-	interval	int64			//采集间隔
+	DestServer string		//上传服务器
+	Interval	int64			//采集间隔
 }
 
 func (self *DefaultOptions) Init(config *tools.Config){
 
-	self.destServer = tools.ReadConfigString(config,zoneconst,destServer_const,"")
-	self.interval = tools.ReadConfigInt64(config,zoneconst,interval_const,60000)
+	self.DestServer = tools.ReadConfigString(config,zoneconst,destServer_const,"")
+	self.Interval = tools.ReadConfigInt64(config,zoneconst,interval_const,60000)
 
-	println(self.destServer,self.interval)
+	//println(self.DestServer,self.Interval)
 }

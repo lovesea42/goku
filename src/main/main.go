@@ -11,6 +11,7 @@ import (
 	"plugins/jvm"
 	"plugins"
 	"config/options"
+	"time"
 )
 
 func testJvm(){
@@ -21,16 +22,29 @@ func testJvm(){
 }
 
 
-func initOptions(){
+func initOptions()*options.DefaultOptions{
 	cfg := new(tools.Config)
+
 	cfg.InitConfig("config.ini")
+
 	defaultOptions := new(options.DefaultOptions)
 	defaultOptions.Init(cfg)
+
+	return defaultOptions
 }
 
 func main(){
 
-	initOptions()
-	//testJvm()
+	options := initOptions()
 
+	//ticker := time.NewTicker(time.Millisecond *
+								//time.Duration(options.Interval))
+	count:=1
+	for true{
+		println(count)
+		testJvm()
+		time.Sleep(time.Millisecond *
+			time.Duration(options.Interval))
+		count++
+	}
 }
