@@ -12,6 +12,10 @@ import (
 	"plugins"
 	"config/options"
 	"time"
+	"main/command"
+	"os"
+	"strconv"
+	"flag"
 )
 
 func testJvm(){
@@ -35,16 +39,31 @@ func initOptions()*options.DefaultOptions{
 
 func main(){
 
-	options := initOptions()
+	s := flag.String("s", "", "command")
+	flag.Parse()
 
-	//ticker := time.NewTicker(time.Millisecond *
-								//time.Duration(options.Interval))
-	count:=1
-	for true{
-		println(count)
-		testJvm()
-		time.Sleep(time.Millisecond *
-			time.Duration(options.Interval))
-		count++
+	if *s != ""{
+
+		command.CreatePidFile(strconv.Itoa(os.Getpid()))
+
+		options := initOptions()
+
+		//ticker := time.NewTicker(time.Millisecond *
+		//time.Duration(options.Interval))
+		count:=1
+		for true{
+			println(count)
+			testJvm()
+			time.Sleep(time.Millisecond *
+				time.Duration(options.Interval))
+			count++
+		}
+
+
+	}else{
+
 	}
+
+
+
 }
