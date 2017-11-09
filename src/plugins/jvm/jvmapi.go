@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strconv"
 	"fmt"
+	"encoding/json"
 )
 
 
@@ -19,12 +20,12 @@ type ApiJvm struct{
  */
 type jvminfo struct{
 
-	eden 	float64
-	old 	float64
-	ygc		int
-	ygct	float64
-	fgc		int
-	fgct 	float64
+	Eden 	float64		`json:"eden"`
+	Old 	float64		`json:"old"`
+	Ygc		int			`json:"ygc"`
+	Ygct	float64		`json:"ygct"`
+	Fgc		int			`json:"fgc"`
+	Fgct 	float64		`json:"fgct"`
 
 }
 
@@ -32,11 +33,21 @@ func (self *ApiJvm)Init(){
 	self.info = make(map[string]jvminfo)
 }
 
-func (self *ApiJvm)Collect(){
+func (self *ApiJvm)Collect() string{
+
+	jsonstr := make(map[string]string)
 
 	//再修正
 	apps := getAllJavaProcess()
 	self.getJVMInfo(apps)
+
+	for k,v := range self.info{
+		b, _ :=  json.Marshal(v)
+		jsonstr[k] = string(b)
+	}
+
+	b, _ := json.Marshal(jsonstr)
+	return string(b)
 }
 
 /**
@@ -119,12 +130,12 @@ func parserJvmInfo(info string)*jvminfo{
 	}
 
 	ret := new(jvminfo)
-	ret.eden,_ = strconv.ParseFloat(collect[2], 32)
-	ret.old,_ = strconv.ParseFloat(collect[3], 32)
-	ret.fgc,_ = strconv.Atoi(collect[8])
-	ret.fgct,_= strconv.ParseFloat(collect[9], 32)
-	ret.ygc,_ = strconv.Atoi(collect[6])
-	ret.ygct,_= strconv.ParseFloat(collect[7], 32)
+	ret.Eden,_ = strconv.ParseFloat(collect[2], 32)
+	ret.Old,_ = strconv.ParseFloat(collect[3], 32)
+	ret.Fgc,_ = strconv.Atoi(collect[8])
+	ret.Fgct,_= strconv.ParseFloat(collect[9], 32)
+	ret.Ygc,_ = strconv.Atoi(collect[6])
+	ret.Ygct,_= strconv.ParseFloat(collect[7], 32)
 
 	return ret
 }

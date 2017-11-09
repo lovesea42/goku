@@ -9,7 +9,7 @@ import (
 
 type IPlugin interface{
 	Init()
-	Collect()
+	Collect() string
 }
 
 

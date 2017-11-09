@@ -4,21 +4,16 @@ import (
 	"file"
 	"os"
 	"log"
-	"flag"
+	"constants"
 )
 
-const(
-	CommandQuit = "quit"
-)
-
-const preConst string = "goku-"
 
 func CheckPidExist(pid string)bool{
 	return file.CheckFileIsExist(createPidName(pid))
 }
 
 func createPidName(pid string)string{
-	return preConst + pid
+	return constants.PidFilePreConst + pid
 }
 
 

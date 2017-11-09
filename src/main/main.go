@@ -12,17 +12,17 @@ import (
 	"plugins"
 	"config/options"
 	"time"
-	"main/command"
-	"os"
-	"strconv"
 	"flag"
+	"constants"
+	"upload"
 )
 
-func testJvm(){
+func testJvm(url string){
 	data := new(jvm.ApiJvm)
 	var i plugins.IPlugin = data
 	i.Init()
-	i.Collect()
+	collect := i.Collect()
+	upload.HttpPost(url,collect)
 }
 
 
@@ -43,8 +43,8 @@ func main(){
 	flag.Parse()
 
 	if *s != ""{
-
-		command.CreatePidFile(strconv.Itoa(os.Getpid()))
+		//正常命令执行
+		//command.CreatePidFile(strconv.Itoa(os.Getpid()))
 
 		options := initOptions()
 
@@ -53,7 +53,7 @@ func main(){
 		count:=1
 		for true{
 			println(count)
-			testJvm()
+			testJvm(options.DestServer)
 			time.Sleep(time.Millisecond *
 				time.Duration(options.Interval))
 			count++
@@ -61,7 +61,21 @@ func main(){
 
 
 	}else{
+		//特殊命令
+		switch *s{
 
+		case constants.CommandQuit:
+			{
+				//files := file.GetAllPid()
+				//
+				//for _,v := range files{
+				//
+				//}
+			}
+		default:
+
+
+		}
 	}
 
 
