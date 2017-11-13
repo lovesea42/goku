@@ -7,7 +7,7 @@ import (
 	插件接口
  */
 
-type IPlugin interface{
+type Pluginer interface{
 	Init()
 	Collect() string
 }
